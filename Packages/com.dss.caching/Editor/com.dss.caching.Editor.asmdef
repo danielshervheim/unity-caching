@@ -1,0 +1,19 @@
+{
+    "name": "com.dss.caching.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4b4a8d831ff314328aa2d51308f0b67b",
+        "GUID:1197fe4eedcb44621b1fa8c7edd83964"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

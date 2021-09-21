@@ -1,0 +1,23 @@
+{
+  "author": {
+    "name" : "Daniel Shervheim",
+    "email" : "danielshervheim@gmail.com",
+    "url" : "https://www.danielshervheim.com/"
+  },
+  "description": "A collection of useful Unity extensions and utilities.",
+  "displayName": "Caching",
+  "keywords": [
+    "unity",
+    "utilities",
+    "caching"
+  ],
+  "dependencies": {
+    "com.dss.core-utils": "1.6.4"
+  },
+  "license": "BSD-3-Clause",
+  "name": "com.dss.caching",
+  "repository": "github:danielshervheim/unity-caching",
+  "unity": "2019.1",
+  "version": "1.0.0",
+  "hideInEditor": false
+}
