@@ -7,6 +7,25 @@ namespace DSS.Caching
 
 public class Cache : MonoBehaviour
 {
+    // Singleton stuff
+    private static Cache _instance = null;
+    public static Cache Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<Cache>();
+            }
+            if (_instance == null)
+            {
+                GameObject go = new GameObject("Cache");
+                _instance = go.AddComponent<Cache>();
+            }
+            return _instance;
+        }
+    }
+
     public string cacheDirectoryPath
     {
         get { return Path.Combine(Application.persistentDataPath, "com.dss.caching", "cache"); }
