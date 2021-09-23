@@ -51,7 +51,23 @@ public static class CacheUtilities
 
     public static IEnumerator DownloadSprite(string url, Action<Sprite> onSuccess, Action<string> onError)
     {
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        UnityWebRequest request = null;
+        try
+        {
+            request = UnityWebRequestTexture.GetTexture(url);
+        }
+        catch (Exception exception)
+        {
+            onError(exception.Message);
+            yield break;
+        }
+
+        if (request == null)
+        {
+            onError("Failed to make request to " + url);
+            yield break;
+        }
+        
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success || request.error != null)
@@ -95,7 +111,23 @@ public static class CacheUtilities
 
     public static IEnumerator DownloadString(string url, Action<string> onSuccess, Action<string> onError)
     {
-        UnityWebRequest request = UnityWebRequest.Get(url);
+        UnityWebRequest request = null;
+        try
+        {
+            request = UnityWebRequest.Get(url);
+        }
+        catch (Exception exception)
+        {
+            onError(exception.Message);
+            yield break;
+        }
+
+        if (request == null)
+        {
+            onError("Failed to make request to " + url);
+            yield break;
+        }
+
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success || request.error != null)
@@ -133,7 +165,23 @@ public static class CacheUtilities
         string extension = Path.GetExtension(url);
         AudioType type = AudioTypeFromExtension(extension);
 
-        UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(url, type);
+        UnityWebRequest request = null;
+        try
+        {
+            request = UnityWebRequestMultimedia.GetAudioClip(url, type);
+        }
+        catch (Exception exception)
+        {
+            onError(exception.Message);
+            yield break;
+        }
+
+        if (request == null)
+        {
+            onError("Failed to make request to " + url);
+            yield break;
+        }
+
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success || request.error != null)

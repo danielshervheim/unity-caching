@@ -23,8 +23,8 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"com.dss.core-utils": "1.6.4",
-"com.dss.caching": "1.0.1"
+"com.dss.core-utils": "1.6.6",
+"com.dss.caching": "1.0.2"
 ```
 
 After changes, the manifest file should look like below:
@@ -39,8 +39,8 @@ After changes, the manifest file should look like below:
     }
     ],
     "dependencies": {
-        "com.dss.core-utils": "1.6.4",
-        "com.dss.caching": "1.0.1"
+        "com.dss.core-utils": "1.6.6",
+        "com.dss.caching": "1.0.2"
         ...
 ```
 

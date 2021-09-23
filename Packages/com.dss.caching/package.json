@@ -12,12 +12,12 @@
     "caching"
   ],
   "dependencies": {
-    "com.dss.core-utils": "1.6.4"
+    "com.dss.core-utils": "1.6.6"
   },
   "license": "BSD-3-Clause",
   "name": "com.dss.caching",
   "repository": "github:danielshervheim/unity-caching",
-  "unity": "2019.1",
-  "version": "1.0.1",
+  "unity": "2020.3",
+  "version": "1.0.2",
   "hideInEditor": false
 }
