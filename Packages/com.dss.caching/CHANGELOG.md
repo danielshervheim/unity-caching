@@ -17,3 +17,7 @@
 
 - Added robust checks for avoiding race conditions / duplicated downloads
     - Now only a single file is ever downloaded from the same url
+
+## 1.0.4
+
+- Fixed incorrectly saving `.png` files as `.bin` files

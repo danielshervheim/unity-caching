@@ -104,7 +104,8 @@ public class Cache : AutomaticSingleton<Cache>
         onError,
         CacheUtilities.DownloadSprite,
         CacheUtilities.WriteSprite,
-        CacheUtilities.ReadSprite);
+        CacheUtilities.ReadSprite,
+        ".png");
     }
 
     public void RequestAudioClip(string url, Action<AudioClip> onSuccess, Action<string> onError)
@@ -133,7 +134,7 @@ public class Cache : AutomaticSingleton<Cache>
         CacheUtilities.ReadString);
     }
 
-    private void Request(string url, Action<object> onSuccess, Action<string> onError, DownloadObject downloader, WriteObject writer, ReadObject reader)
+    private void Request(string url, Action<object> onSuccess, Action<string> onError, DownloadObject downloader, WriteObject writer, ReadObject reader, string extension=".bin")
     {
         try
         {
@@ -165,7 +166,7 @@ public class Cache : AutomaticSingleton<Cache>
                     (audioClip) =>
                     {
                         // Store a copy on disc
-                        string path = Path.Combine(cacheDirectoryPath, Guid.NewGuid().ToString(), Path.GetFileNameWithoutExtension(url) + ".bin");
+                        string path = Path.Combine(cacheDirectoryPath, Guid.NewGuid().ToString(), Path.GetFileNameWithoutExtension(url) + extension);
                         writer(path, audioClip);
 
                         // And add a reference to it to the index
