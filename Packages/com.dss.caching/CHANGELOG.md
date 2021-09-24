@@ -12,3 +12,8 @@
 ## 1.0.2
 
 - Added more robust url checking
+
+## 1.0.3
+
+- Added robust checks for avoiding race conditions / duplicated downloads
+    - Now only a single file is ever downloaded from the same url

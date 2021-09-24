@@ -32,6 +32,11 @@ public static class CacheUtilities
     // --------- //
     // SPRITE IO //
     // --------- //
+    
+    public static void WriteSprite(string path, object sprite)
+    {
+        WriteSprite(path, (Sprite)sprite);
+    }
 
     public static void WriteSprite(string path, Sprite sprite)
     {
@@ -93,6 +98,11 @@ public static class CacheUtilities
     // STRING IO //
     // --------- //
 
+    public static void WriteString(string path, object message)
+    {
+        WriteString(path, (string)message);
+    }
+
     public static void WriteString(string path, string message)
     {
         byte[] byteArray = Encoding.StringToByteArray(message);
@@ -143,7 +153,12 @@ public static class CacheUtilities
     // ------------- //
     // AUDIO CLIP IO //
     // ------------- //
-    
+
+    public static void WriteAudioClip(string path, object audioClip)
+    {
+        WriteAudioClip(path, (AudioClip)audioClip);
+    }
+
     public static void WriteAudioClip(string path, AudioClip audioClip)
     {
         byte[] byteArray = Encoding.AudioClipToByteArray(audioClip);
