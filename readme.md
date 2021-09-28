@@ -24,7 +24,7 @@ To the `dependencies` section:
 
 ```
 "com.dss.core-utils": "1.6.6",
-"com.dss.caching": "1.0.4"
+"com.dss.caching": "1.1.0"
 ```
 
 After changes, the manifest file should look like below:
@@ -40,7 +40,7 @@ After changes, the manifest file should look like below:
     ],
     "dependencies": {
         "com.dss.core-utils": "1.6.6",
-        "com.dss.caching": "1.0.4"
+        "com.dss.caching": "1.1.0"
         ...
 ```
 
@@ -86,5 +86,51 @@ cache.RequestAudioClip("https://file-examples-com.github.io/uploads/2017/11/file
     Debug.LogError(errorMessage);
 });
 
+
+```
+
+Alternatively, if you want to download a collection of files and be notified when all downloads are complete, you can do the following:
+
+```csharp
+
+// Create a new download manager
+DSS.Caching.DownloadManager dm = new DSS.Caching.DownloadManager();
+
+// Add files to download to the manager
+dm.AddSprite("https://www.example.com/A.png",
+(sprite) =>
+{
+    // do something with sprite A
+},
+(error) =>
+{
+    Debug.LogError(error);
+});
+
+dm.AddSprite("https://www.example.com/B.png",
+(sprite) =>
+{
+    // do something with sprite B
+},
+(error) =>
+{
+    Debug.LogError(error);
+});
+
+dm.AddSprite("https://www.example.com/C.png",
+(sprite) =>
+{
+    // do something with sprite C
+},
+(error) =>
+{
+    Debug.LogError(error);
+});
+
+// And actually begin downloading
+dm.Download(() =>
+{
+    Debug.Log("all files downloaded!");
+});
 
 ```

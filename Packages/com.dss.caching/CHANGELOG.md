@@ -21,3 +21,7 @@
 ## 1.0.4
 
 - Fixed incorrectly saving `.png` files as `.bin` files
+
+## 1.1.0
+
+- Added `DownloadManager` class.

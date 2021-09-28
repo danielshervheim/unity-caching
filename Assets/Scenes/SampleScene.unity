@@ -181,6 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1075577499}
   - component: {fileID: 1075577498}
+  - component: {fileID: 1075577500}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -195,7 +196,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075577497}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a0d0626533b8495c9cc436ee58dcc8b, type: 3}
   m_Name: 
@@ -214,6 +215,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1075577500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075577497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0dd81b73f87487ca11b197a04eaa48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteUrls:
+  - https://images.unsplash.com/photo-1628191136272-08f5d3d9a6c0?ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60
+  - https://images.unsplash.com/photo-1632835172473-4c5d27c5759a?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60
+  - https://images.unsplash.com/photo-1632749280522-303a54d376cd?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60
+  - https://images.unsplash.com/photo-1626885131385-c6bf517c8194?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60
+  - https://images.unsplash.com/photo-1632714394526-1e87d08d56c4?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60
 --- !u!1 &1243988476
 GameObject:
   m_ObjectHideFlags: 0
