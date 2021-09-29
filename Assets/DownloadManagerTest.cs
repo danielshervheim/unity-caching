@@ -29,7 +29,7 @@ public class DownloadManagerTest : MonoBehaviour
             {
                 Debug.LogError("failed " + url);
             });
-        }    
+        }
 
         dm.Download(() =>
         {

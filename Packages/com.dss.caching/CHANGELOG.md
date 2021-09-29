@@ -25,3 +25,7 @@
 ## 1.1.0
 
 - Added `DownloadManager` class.
+
+## 1.1.1
+
+- Added an `IEnumerator` version of the `DownloadManager.Download` function, called `DownloadRoutine`.

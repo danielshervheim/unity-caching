@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,9 +29,16 @@ public class DownloadManager
     private List<Downloadable> m_downloadables;
     private bool m_downloading;
 
+    private bool m_allDownloadsSucceeded = true;
+
     // ---------- //
     // PROPERTIES //
     // ---------- //
+
+    public bool allDownloadsSucceeded
+    {
+        get { return m_allDownloadsSucceeded; }
+    }
 
     private Cache cache
     {
@@ -80,6 +88,85 @@ public class DownloadManager
         m_downloadables.Add(d);
     }
 
+    public IEnumerator DownloadRoutine(Action onComplete)
+    {
+        if (m_downloading)
+        {
+            yield break;
+        }
+
+        m_allDownloadsSucceeded = true;
+
+        int finished = 0;
+
+        for (int i = 0; i < m_downloadables.Count; i++)
+        {
+            Downloadable d = m_downloadables[i];
+
+            if (d.type == DownloadType.Sprite)
+            {
+                cache.RequestSprite(d.url,
+                (sprite) =>
+                {
+                    d.onSuccess(sprite);
+
+                    finished += 1;
+                },
+                (error) =>
+                {
+                    d.onError(error);
+                    m_allDownloadsSucceeded = false;
+                    finished += 1;
+                });
+            }
+            else if (d.type == DownloadType.AudioClip)
+            {
+                cache.RequestAudioClip(d.url,
+                (audioClip) =>
+                {
+                    d.onSuccess(audioClip);
+
+                    finished += 1;
+                },
+                (error) =>
+                {
+                    d.onError(error);
+                    m_allDownloadsSucceeded = false;
+                    finished += 1;
+                });
+            }
+            else if (d.type == DownloadType.String)
+            {
+                cache.RequestString(d.url,
+                (text) =>
+                {
+                    d.onSuccess(text);
+
+                    finished += 1;
+                },
+                (error) =>
+                {
+                    d.onError(error);
+                    m_allDownloadsSucceeded = false;
+                    finished += 1;
+                });
+            }
+            else
+            {
+                m_allDownloadsSucceeded = false;
+                finished += 1;
+            }
+        }
+
+        while (finished < m_downloadables.Count)
+        {
+            yield return null;
+        }
+
+        onComplete();
+        m_downloading = false;
+    }
+
     public void Download(Action onComplete)
     {
         if (m_downloading)
@@ -87,6 +174,7 @@ public class DownloadManager
             return;
         }
 
+        m_allDownloadsSucceeded = true;
         int finished = 0;
 
         for (int i = 0; i < m_downloadables.Count; i++)
@@ -110,7 +198,8 @@ public class DownloadManager
                 (error) =>
                 {
                     d.onError(error);
-                    
+                    m_allDownloadsSucceeded = false;
+
                     finished += 1;
                     if (finished == m_downloadables.Count)
                     {
@@ -136,6 +225,7 @@ public class DownloadManager
                 (error) =>
                 {
                     d.onError(error);
+                    m_allDownloadsSucceeded = false;
 
                     finished += 1;
                     if (finished == m_downloadables.Count)
@@ -162,6 +252,7 @@ public class DownloadManager
                 (error) =>
                 {
                     d.onError(error);
+                    m_allDownloadsSucceeded = false;
 
                     finished += 1;
                     if (finished == m_downloadables.Count)
@@ -173,6 +264,7 @@ public class DownloadManager
             }
             else
             {
+                m_allDownloadsSucceeded = false;
                 finished += 1;
                 if (finished == m_downloadables.Count)
                 {
