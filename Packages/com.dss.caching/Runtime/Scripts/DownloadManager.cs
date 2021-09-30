@@ -57,114 +57,42 @@ public class DownloadManager
 
     public void AddSprite(string url, Action<Sprite> onSuccess, Action<string> onError)
     {
-        Downloadable d = new Downloadable();
-        d.url = url;
-        d.type = DownloadType.Sprite;
-        d.onSuccess = ((object obj) => { onSuccess((Sprite)obj); });
-        d.onError = onError;
-
-        m_downloadables.Add(d);
+        Add<Sprite>(url, DownloadType.Sprite, onSuccess, onError);
     }
 
     public void AddAudioClip(string url, Action<AudioClip> onSuccess, Action<string> onError)
     {
-        Downloadable d = new Downloadable();
-        d.url = url;
-        d.type = DownloadType.AudioClip;
-        d.onSuccess = ((object obj) => { onSuccess((AudioClip)obj); });
-        d.onError = onError;
-
-        m_downloadables.Add(d);
+        Add<AudioClip>(url, DownloadType.AudioClip, onSuccess, onError);
     }
 
     public void AddString(string url, Action<string> onSuccess, Action<string> onError)
     {
-        Downloadable d = new Downloadable();
-        d.url = url;
-        d.type = DownloadType.String;
-        d.onSuccess = ((object obj) => { onSuccess((string)obj); });
-        d.onError = onError;
+        Add<string>(url, DownloadType.String, onSuccess, onError);
+    }
 
+    private void Add<T>(string url, DownloadType type, Action<T> onSuccess, Action<string> onError)
+    {
+        Downloadable d= new Downloadable();
+        d.url = url;
+        d.type = type;
+        d.onSuccess = ((obj) => onSuccess((T)obj));
+        d.onError = onError;
         m_downloadables.Add(d);
     }
 
-    public IEnumerator DownloadRoutine(Action onComplete)
+    public IEnumerator DownloadAsCoroutine(Action onComplete)
     {
         if (m_downloading)
         {
             yield break;
         }
 
-        m_allDownloadsSucceeded = true;
+        Download(onComplete);
 
-        int finished = 0;
-
-        for (int i = 0; i < m_downloadables.Count; i++)
-        {
-            Downloadable d = m_downloadables[i];
-
-            if (d.type == DownloadType.Sprite)
-            {
-                cache.RequestSprite(d.url,
-                (sprite) =>
-                {
-                    d.onSuccess(sprite);
-
-                    finished += 1;
-                },
-                (error) =>
-                {
-                    d.onError(error);
-                    m_allDownloadsSucceeded = false;
-                    finished += 1;
-                });
-            }
-            else if (d.type == DownloadType.AudioClip)
-            {
-                cache.RequestAudioClip(d.url,
-                (audioClip) =>
-                {
-                    d.onSuccess(audioClip);
-
-                    finished += 1;
-                },
-                (error) =>
-                {
-                    d.onError(error);
-                    m_allDownloadsSucceeded = false;
-                    finished += 1;
-                });
-            }
-            else if (d.type == DownloadType.String)
-            {
-                cache.RequestString(d.url,
-                (text) =>
-                {
-                    d.onSuccess(text);
-
-                    finished += 1;
-                },
-                (error) =>
-                {
-                    d.onError(error);
-                    m_allDownloadsSucceeded = false;
-                    finished += 1;
-                });
-            }
-            else
-            {
-                m_allDownloadsSucceeded = false;
-                finished += 1;
-            }
-        }
-
-        while (finished < m_downloadables.Count)
+        while (m_downloading)
         {
             yield return null;
         }
-
-        onComplete();
-        m_downloading = false;
     }
 
     public void Download(Action onComplete)
@@ -173,6 +101,8 @@ public class DownloadManager
         {
             return;
         }
+
+        m_downloading = true;
 
         m_allDownloadsSucceeded = true;
         int finished = 0;

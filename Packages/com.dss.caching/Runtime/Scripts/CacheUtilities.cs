@@ -105,18 +105,24 @@ public static class CacheUtilities
 
     public static void WriteString(string path, string message)
     {
-        byte[] byteArray = Encoding.StringToByteArray(message);
-
         FileInfo info = new FileInfo(path);
         info.Directory.Create();
+        File.WriteAllText(path, message);
 
-        File.WriteAllBytes(path, byteArray);
+        // byte[] byteArray = Encoding.StringToByteArray(message);
+
+        // FileInfo info = new FileInfo(path);
+        // info.Directory.Create();
+
+        // File.WriteAllBytes(path, byteArray);
     }
 
     public static string ReadString(string path)
     {
-        byte[] byteArray = File.ReadAllBytes(path);
-        return Encoding.StringFromByteArray(byteArray);
+        return File.ReadAllText(path);
+
+        // byte[] byteArray = File.ReadAllBytes(path);
+        // return Encoding.StringFromByteArray(byteArray);
     }
 
     public static IEnumerator DownloadString(string url, Action<string> onSuccess, Action<string> onError)

@@ -94,47 +94,52 @@ public class Cache : AutomaticSingleton<Cache>
     // GETTERS //
     // ------- //
 
-    public void RequestSprite(string url, Action<Sprite> onSuccess, Action<string> onError)
+    public void RequestSprite(string url, Action<Sprite> onSuccess = null, Action<string> onError = null)
     {
-        Request(url,
-        (obj) =>
-        {
-            onSuccess((Sprite)obj);
-        },
-        onError,
+        Request<Sprite>(url,
         CacheUtilities.DownloadSprite,
         CacheUtilities.WriteSprite,
         CacheUtilities.ReadSprite,
+        onSuccess,
+        onError,
         ".png");
     }
 
-    public void RequestAudioClip(string url, Action<AudioClip> onSuccess, Action<string> onError)
+    public void RequestAudioClip(string url, Action<AudioClip> onSuccess = null, Action<string> onError = null)
     {
-        Request(url,
-        (obj) =>
-        {
-            onSuccess((AudioClip)obj);
-        },
-        onError,
+        Request<AudioClip>(url,
         CacheUtilities.DownloadAudioClip,
         CacheUtilities.WriteAudioClip,
-        CacheUtilities.ReadAudioClip);
+        CacheUtilities.ReadAudioClip,
+        onSuccess,
+        onError);
     }
 
-    public void RequestString(string url, Action<string> onSuccess, Action<string> onError)
+    public void RequestString(string url, Action<string> onSuccess = null, Action<string> onError = null)
     {
-        Request(url,
-        (obj) =>
+        string extension = Path.GetExtension(url);
+        if (extension.Equals(string.Empty))
         {
-            onSuccess((string)obj);
-        },
-        onError,
+            extension = ".txt";
+        }
+
+        Request<string>(url,
         CacheUtilities.DownloadString,
         CacheUtilities.WriteString,
-        CacheUtilities.ReadString);
+        CacheUtilities.ReadString,
+        onSuccess,
+        onError,
+        extension);
     }
 
-    private void Request(string url, Action<object> onSuccess, Action<string> onError, DownloadObject downloader, WriteObject writer, ReadObject reader, string extension=".bin")
+    private void Request<T>(
+        string url,
+        DownloadObject downloader,
+        WriteObject writer,
+        ReadObject reader,
+        Action<T> onSuccess = null,
+        Action<string> onError = null,
+        string extension=".bin")
     {
         try
         {
@@ -146,11 +151,13 @@ public class Cache : AutomaticSingleton<Cache>
                 {
                     m_downloadsInProgress[url].onDownloadComplete.AddListener((obj) =>
                     {
-                        onSuccess(obj);
+                        onSuccess?.Invoke((T)obj);
+                        // onSuccess((T)obj);
                     });
                     m_downloadsInProgress[url].onDownloadFailed.AddListener((error) =>
                     {
-                        onError(error);
+                        onError?.Invoke(error);
+                        // onError(error);
                     });
                 }
                 // If were not, then download it
@@ -163,26 +170,27 @@ public class Cache : AutomaticSingleton<Cache>
                     m_downloadsInProgress[url] = download;
 
                     StartCoroutine(downloader(url, 
-                    (audioClip) =>
+                    (obj) =>
                     {
                         // Store a copy on disc
-                        string path = Path.Combine(cacheDirectoryPath, Guid.NewGuid().ToString(), Path.GetFileNameWithoutExtension(url) + extension);
-                        writer(path, audioClip);
+                        string relativePath = Path.Combine(Guid.NewGuid().ToString(), Path.GetFileNameWithoutExtension(url) + extension);
+                        string path = Path.Combine(cacheDirectoryPath, relativePath);
+                        writer(path, obj);
 
                         // And add a reference to it to the index
                         CacheEntry entry = new CacheEntry();
                         entry.url = url;
-                        entry.path = path;
-                        entry.data = audioClip;
+                        entry.path = relativePath;
+                        entry.data = obj;
                         m_index[url] = entry;
 
-                        onSuccess(audioClip);
-                        download.onDownloadComplete.Invoke(audioClip);
+                        onSuccess?.Invoke((T)obj);
+                        download.onDownloadComplete.Invoke(obj);
                         m_downloadsInProgress.Remove(url);
                     },
                     (error) =>
                     {
-                        onError(error);
+                        onError?.Invoke(error);
                         download.onDownloadFailed.Invoke(error);
                         m_downloadsInProgress.Remove(url);
                     }));
@@ -195,26 +203,27 @@ public class Cache : AutomaticSingleton<Cache>
                 // If in memory, just use in-memory copy
                 if (entry.data != null)
                 {
-                    onSuccess(entry.data);
+                    onSuccess?.Invoke((T)entry.data);
                 }
                 // Stored on disc, so load from disc
                 else
                 {
-                    object obj = reader(entry.path);
+                    string fullPath = Path.Combine(cacheDirectoryPath, entry.path);
+                    object obj = reader(fullPath);
     
                     if (obj == null)
                     {
-                        throw new ArgumentException("Failed to deserialize file: " + entry.path);
+                        throw new ArgumentException("Failed to deserialize file: " + fullPath);
                     }
     
                     entry.data = obj;  // save a copy in-memory
-                    onSuccess(obj);
+                    onSuccess?.Invoke((T)obj);
                 }
             }
         }
         catch (Exception exception)
         {
-            onError(exception.Message);
+            onError?.Invoke(exception.Message);
         }
     }
 

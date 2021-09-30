@@ -29,3 +29,7 @@
 ## 1.1.1
 
 - Added an `IEnumerator` version of the `DownloadManager.Download` function, called `DownloadRoutine`.
+
+## 1.1.2
+
+- Fixed error where the saved path references would be invalid due to changing `Application.peristantDataPath` locations.
