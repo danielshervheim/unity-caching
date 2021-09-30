@@ -33,3 +33,7 @@
 ## 1.1.2
 
 - Fixed error where the saved path references would be invalid due to changing `Application.peristantDataPath` locations.
+
+## 1.1.3
+
+- Fixed a potential "illegal character in path" exception

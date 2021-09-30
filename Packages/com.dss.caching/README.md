@@ -24,7 +24,7 @@ To the `dependencies` section:
 
 ```
 "com.dss.core-utils": "1.6.6",
-"com.dss.caching": "1.1.2"
+"com.dss.caching": "1.1.3"
 ```
 
 After changes, the manifest file should look like below:
@@ -40,7 +40,7 @@ After changes, the manifest file should look like below:
     ],
     "dependencies": {
         "com.dss.core-utils": "1.6.6",
-        "com.dss.caching": "1.1.2"
+        "com.dss.caching": "1.1.3"
         ...
 ```
 

@@ -117,19 +117,26 @@ public class Cache : AutomaticSingleton<Cache>
 
     public void RequestString(string url, Action<string> onSuccess = null, Action<string> onError = null)
     {
-        string extension = Path.GetExtension(url);
-        if (extension.Equals(string.Empty))
+        try
         {
-            extension = ".txt";
-        }
+            string extension = Path.GetExtension(url);
+            if (extension.Equals(string.Empty))
+            {
+                extension = ".txt";
+            }
 
-        Request<string>(url,
-        CacheUtilities.DownloadString,
-        CacheUtilities.WriteString,
-        CacheUtilities.ReadString,
-        onSuccess,
-        onError,
-        extension);
+            Request<string>(url,
+            CacheUtilities.DownloadString,
+            CacheUtilities.WriteString,
+            CacheUtilities.ReadString,
+            onSuccess,
+            onError,
+            extension);
+        }
+        catch (Exception exception)
+        {
+            onError?.Invoke(exception.Message);
+        }
     }
 
     private void Request<T>(
